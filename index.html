@@ -1,0 +1,460 @@
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AURA | Private Travels</title>
+    <meta name="description" content="Agencia de viajes de lujo para experiencias personalizadas y destinos exclusivos.">
+    
+    <!-- Google Fonts: Playfair Display (Serif Elegante) & Montserrat (Sans Moderno) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Configuración personalizada de Tailwind -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'luxury-dark': '#0f172a', /* Azul medianoche profundo */
+                        'luxury-gold': '#d4af37', /* Dorado clásico */
+                        'luxury-gold-light': '#f3e5ab',
+                        'luxury-gray': '#f8f9fa',
+                        'overlay-dark': 'rgba(15, 23, 42, 0.6)'
+                    },
+                    fontFamily: {
+                        serif: ['"Playfair Display"', 'serif'],
+                        sans: ['"Montserrat"', 'sans-serif'],
+                    },
+                    backgroundImage: {
+                        'hero-pattern': "linear-gradient(to bottom, rgba(15, 23, 42, 0.3), rgba(15, 23, 42, 0.6)), url('https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80')",
+                    },
+                    boxShadow: {
+                        'glow': '0 0 20px rgba(212, 175, 55, 0.3)',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Estilos CSS Personalizados -->
+    <style>
+        /* Animaciones de entrada */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 1s ease-out;
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Hover efecto en imágenes */
+        .card-zoom {
+            overflow: hidden;
+        }
+        .card-zoom img {
+            transition: transform 0.8s ease;
+        }
+        .card-zoom:hover img {
+            transform: scale(1.1);
+        }
+        
+        /* Scrollbar personalizado */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0f172a; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #d4af37; 
+            border-radius: 4px;
+        }
+
+        /* Inputs del formulario */
+        .input-luxury {
+            background: transparent;
+            border-bottom: 1px solid rgba(255,255,255,0.3);
+            transition: all 0.3s ease;
+        }
+        .input-luxury:focus {
+            border-bottom: 1px solid #d4af37;
+            outline: none;
+        }
+
+        /* Clase para el logo */
+        .logo-filter {
+            /* Asegura que el logo se vea bien sobre fondos oscuros si es transparente,
+               o lo mantiene natural si ya tiene fondo */
+            filter: brightness(1.1);
+        }
+    </style>
+</head>
+<body class="font-sans text-slate-800 bg-luxury-gray antialiased selection:bg-luxury-gold selection:text-white">
+
+    <!-- Navegación -->
+    <nav id="navbar" class="fixed w-full z-50 transition-all duration-300 py-6 text-white bg-gradient-to-b from-black/60 to-transparent">
+        <div class="container mx-auto px-6 flex justify-between items-center">
+            
+            <!-- LOGO INTEGRADO -->
+            <a href="#" class="flex items-center gap-3 group">
+                <!-- Se usa el archivo logo.png proporcionado -->
+                <!-- Se añade object-contain para mantener proporciones y mix-blend si fuera necesario, 
+                     pero standard img tag es lo más seguro -->
+                <img src="logo.png" alt="AURA Logo" class="h-12 md:h-14 w-auto object-contain logo-filter transition-transform duration-500 group-hover:scale-105">
+            </a>
+
+            <!-- Menú Desktop -->
+            <div class="hidden md:flex items-center gap-8 text-xs md:text-sm tracking-[0.2em] uppercase font-light">
+                <a href="#destinos" class="hover:text-luxury-gold transition-colors relative after:content-[''] after:absolute after:-bottom-2 after:left-0 after:w-0 after:h-[1px] after:bg-luxury-gold after:transition-all hover:after:w-full">Destinos</a>
+                <a href="#aura-lifestyle" class="hover:text-luxury-gold transition-colors relative after:content-[''] after:absolute after:-bottom-2 after:left-0 after:w-0 after:h-[1px] after:bg-luxury-gold after:transition-all hover:after:w-full">Lifestyle</a>
+                <a href="#servicios" class="hover:text-luxury-gold transition-colors relative after:content-[''] after:absolute after:-bottom-2 after:left-0 after:w-0 after:h-[1px] after:bg-luxury-gold after:transition-all hover:after:w-full">Servicios</a>
+                <a href="#contacto" class="px-6 py-2 border border-luxury-gold text-luxury-gold hover:bg-luxury-gold hover:text-luxury-dark transition-all duration-300">Concierge</a>
+            </div>
+
+            <!-- Botón Móvil -->
+            <button id="mobile-menu-btn" class="md:hidden text-white focus:outline-none hover:text-luxury-gold transition-colors">
+                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+            </button>
+        </div>
+        
+        <!-- Menú Móvil -->
+        <div id="mobile-menu" class="hidden absolute top-full left-0 w-full bg-luxury-dark border-t border-white/10 text-center py-6 md:hidden shadow-xl backdrop-blur-lg">
+            <a href="#destinos" class="block py-3 text-sm tracking-widest uppercase hover:text-luxury-gold">Destinos</a>
+            <a href="#aura-lifestyle" class="block py-3 text-sm tracking-widest uppercase hover:text-luxury-gold">Lifestyle</a>
+            <a href="#servicios" class="block py-3 text-sm tracking-widest uppercase hover:text-luxury-gold">Servicios</a>
+            <a href="#contacto" class="block py-3 text-sm tracking-widest uppercase text-luxury-gold font-medium">Contacto</a>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="relative h-screen flex items-center justify-center bg-hero-pattern bg-cover bg-center bg-fixed bg-no-repeat">
+        <div class="text-center text-white px-4 max-w-5xl mx-auto z-10 reveal active">
+            <p class="text-luxury-gold tracking-[0.4em] uppercase text-xs md:text-sm mb-6 font-medium animate-pulse">Beyond First Class</p>
+            <h1 class="font-serif text-5xl md:text-7xl lg:text-8xl mb-8 leading-tight">
+                AURA <br><span class="text-3xl md:text-5xl lg:text-6xl italic font-light opacity-90">Private Travels</span>
+            </h1>
+            <p class="font-sans font-light text-base md:text-lg text-gray-200 mb-12 max-w-2xl mx-auto leading-relaxed border-l-2 border-luxury-gold pl-6 text-left md:text-center md:border-l-0 md:pl-0">
+                No vendemos viajes. Diseñamos legados. Acceso exclusivo a los rincones más inexplorados y sofisticados del planeta.
+            </p>
+            <a href="#aura-lifestyle" class="inline-block group relative px-10 py-4 overflow-hidden bg-white/10 backdrop-blur-sm border border-white/30 text-white shadow-lg transition-all duration-300 hover:bg-luxury-gold hover:border-luxury-gold hover:text-luxury-dark">
+                <span class="relative z-10 font-medium tracking-[0.2em] text-xs uppercase">Descubrir AURA</span>
+            </a>
+            
+            <!-- Scroll Indicator -->
+            <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce opacity-70">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
+                    <path d="M12 5V19M12 19L5 12M12 19L19 12" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </div>
+        </div>
+    </header>
+
+    <!-- Intro -->
+    <section class="py-24 bg-white text-center px-6">
+        <div class="max-w-3xl mx-auto reveal">
+            <span class="text-luxury-gold text-5xl block mb-6 font-serif opacity-50">"</span>
+            <h2 class="font-serif text-3xl md:text-4xl text-luxury-dark mb-8 leading-normal">
+                El verdadero lujo no es lo que compras,<br>es lo que <span class="italic text-luxury-gold">sientes</span>.
+            </h2>
+            <p class="text-gray-500 font-light leading-relaxed text-lg">
+                En AURA, entendemos que su tiempo es el activo más valioso. Curamos itinerarios que combinan la privacidad absoluta con la inmersión cultural profunda.
+            </p>
+            <div class="w-16 h-[2px] bg-luxury-gold mx-auto mt-12"></div>
+        </div>
+    </section>
+
+    <!-- NUEVA SECCIÓN: LIFESTYLE / MENÚ VISUAL -->
+    <!-- Integración de las imágenes: CASA.png, ALBERCA.png, CENA.png -->
+    <section id="aura-lifestyle" class="py-20 bg-luxury-gray border-t border-gray-200">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16 reveal">
+                <span class="text-luxury-gold tracking-widest text-xs uppercase font-semibold">Experiencia Inmersiva</span>
+                <h3 class="font-serif text-4xl mt-3 text-luxury-dark">El Estilo de Vida AURA</h3>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-0 shadow-2xl reveal">
+                
+                <!-- Ítem 1: CASA (Villas) -->
+                <div class="group relative h-[600px] overflow-hidden cursor-pointer card-zoom">
+                    <!-- Imagen de fondo -->
+                    <img src="CASA.png" alt="Villas Privadas" class="absolute inset-0 w-full h-full object-cover">
+                    <!-- Overlay oscuro -->
+                    <div class="absolute inset-0 bg-luxury-dark/40 group-hover:bg-luxury-dark/20 transition-all duration-500"></div>
+                    <!-- Contenido -->
+                    <div class="absolute inset-0 flex flex-col justify-end p-10 bg-gradient-to-t from-luxury-dark via-transparent to-transparent">
+                        <div class="transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
+                            <span class="text-luxury-gold text-xs tracking-[0.2em] uppercase mb-3 block border-l-2 border-luxury-gold pl-3">Arquitectura</span>
+                            <h4 class="font-serif text-3xl text-white mb-4">Villas Exclusivas</h4>
+                            <p class="text-gray-200 font-light text-sm opacity-0 max-h-0 group-hover:opacity-100 group-hover:max-h-20 transition-all duration-700 leading-relaxed overflow-hidden">
+                                Estancias privadas seleccionadas por su diseño, privacidad y vistas inigualables. Su hogar lejos de casa.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Ítem 2: ALBERCA (Wellness/Relax) -->
+                <div class="group relative h-[600px] overflow-hidden cursor-pointer card-zoom lg:-mt-8 z-10 lg:shadow-2xl border-x-0 lg:border-x-4 border-white">
+                    <img src="ALBERCA.PNG" alt="Wellness y Relax" class="absolute inset-0 w-full h-full object-cover">
+                    <div class="absolute inset-0 bg-luxury-dark/40 group-hover:bg-luxury-dark/20 transition-all duration-500"></div>
+                    <div class="absolute inset-0 flex flex-col justify-end p-10 bg-gradient-to-t from-luxury-dark via-transparent to-transparent">
+                        <div class="transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
+                            <span class="text-luxury-gold text-xs tracking-[0.2em] uppercase mb-3 block border-l-2 border-luxury-gold pl-3">Wellness</span>
+                            <h4 class="font-serif text-3xl text-white mb-4">Oasis de Calma</h4>
+                            <p class="text-gray-200 font-light text-sm opacity-0 max-h-0 group-hover:opacity-100 group-hover:max-h-20 transition-all duration-700 leading-relaxed overflow-hidden">
+                                Sumérjase en la serenidad. Spas de clase mundial y piscinas infinitas que se funden con el horizonte.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Ítem 3: CENA (Gastronomía) -->
+                <div class="group relative h-[600px] overflow-hidden cursor-pointer card-zoom">
+                    <img src="CENA.png" alt="Cena Romántica" class="absolute inset-0 w-full h-full object-cover">
+                    <div class="absolute inset-0 bg-luxury-dark/40 group-hover:bg-luxury-dark/20 transition-all duration-500"></div>
+                    <div class="absolute inset-0 flex flex-col justify-end p-10 bg-gradient-to-t from-luxury-dark via-transparent to-transparent">
+                        <div class="transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
+                            <span class="text-luxury-gold text-xs tracking-[0.2em] uppercase mb-3 block border-l-2 border-luxury-gold pl-3">Gastronomía</span>
+                            <h4 class="font-serif text-3xl text-white mb-4">Sabores de Autor</h4>
+                            <p class="text-gray-200 font-light text-sm opacity-0 max-h-0 group-hover:opacity-100 group-hover:max-h-20 transition-all duration-700 leading-relaxed overflow-hidden">
+                                Experiencias culinarias privadas bajo las estrellas, diseñadas por chefs galardonados solo para usted.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Destinos Section -->
+    <section id="destinos" class="py-24 bg-white">
+        <div class="container mx-auto px-6">
+            <div class="flex flex-col md:flex-row justify-between items-end mb-16 reveal">
+                <div>
+                    <h3 class="font-serif text-4xl text-luxury-dark mb-2">Colección 2024</h3>
+                    <p class="text-gray-500 font-light">Curaduría de destinos para la temporada.</p>
+                </div>
+                <a href="#" class="hidden md:block text-luxury-dark border-b border-luxury-dark pb-1 hover:text-luxury-gold hover:border-luxury-gold transition-all text-xs uppercase tracking-widest mt-4 md:mt-0">Ver Todo</a>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Card 1 -->
+                <div class="group relative h-[450px] overflow-hidden cursor-pointer reveal rounded-sm shadow-lg">
+                    <img src="https://images.unsplash.com/photo-1537996194471-e657df975ab4?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="Bali Retreat" class="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-transparent opacity-80"></div>
+                    <div class="absolute bottom-0 left-0 p-8 text-white w-full">
+                        <span class="text-luxury-gold text-[10px] tracking-widest uppercase mb-2 block font-semibold">Indonesia</span>
+                        <h4 class="font-serif text-2xl mb-1 group-hover:text-luxury-gold transition-colors">Ubud Sanctuary</h4>
+                    </div>
+                </div>
+
+                <!-- Card 2 -->
+                <div class="group relative h-[450px] overflow-hidden cursor-pointer reveal rounded-sm shadow-lg">
+                    <img src="https://images.unsplash.com/photo-1534447677768-be436bb09401?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="Cinque Terre" class="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-transparent opacity-80"></div>
+                    <div class="absolute bottom-0 left-0 p-8 text-white w-full">
+                        <span class="text-luxury-gold text-[10px] tracking-widest uppercase mb-2 block font-semibold">Italia</span>
+                        <h4 class="font-serif text-2xl mb-1 group-hover:text-luxury-gold transition-colors">Amalfi Coast</h4>
+                    </div>
+                </div>
+
+                <!-- Card 3 -->
+                <div class="group relative h-[450px] overflow-hidden cursor-pointer reveal rounded-sm shadow-lg">
+                    <img src="https://images.unsplash.com/photo-1482053450283-3e0b78b09a70?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="Swiss Alps" class="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-transparent opacity-80"></div>
+                    <div class="absolute bottom-0 left-0 p-8 text-white w-full">
+                        <span class="text-luxury-gold text-[10px] tracking-widest uppercase mb-2 block font-semibold">Suiza</span>
+                        <h4 class="font-serif text-2xl mb-1 group-hover:text-luxury-gold transition-colors">Zermatt Peak</h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Servicios Premium -->
+    <section id="servicios" class="py-24 bg-luxury-dark text-white relative overflow-hidden">
+        <div class="absolute top-0 right-0 -mr-20 -mt-20 w-96 h-96 bg-luxury-gold opacity-5 rounded-full blur-3xl"></div>
+        
+        <div class="container mx-auto px-6 relative z-10">
+            <div class="text-center mb-16 reveal">
+                <span class="text-luxury-gold tracking-widest text-xs uppercase font-semibold">Excelencia Sin Compromisos</span>
+                <h3 class="font-serif text-4xl mt-3">Servicios Signature</h3>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+                <!-- Servicio 1 -->
+                <div class="p-10 border border-white/5 hover:border-luxury-gold/30 hover:bg-white/5 transition-all duration-500 reveal group">
+                    <div class="w-14 h-14 mx-auto mb-6 flex items-center justify-center text-luxury-gold group-hover:scale-110 transition-transform">
+                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path></svg>
+                    </div>
+                    <h4 class="font-serif text-xl mb-4 text-white group-hover:text-luxury-gold transition-colors">Aviación Privada</h4>
+                    <p class="text-gray-400 font-light text-sm leading-relaxed">Logística aérea impecable. Desde jets de largo alcance hasta traslados en helicóptero directo a su villa.</p>
+                </div>
+
+                <!-- Servicio 2 -->
+                <div class="p-10 border border-white/5 hover:border-luxury-gold/30 hover:bg-white/5 transition-all duration-500 reveal group">
+                    <div class="w-14 h-14 mx-auto mb-6 flex items-center justify-center text-luxury-gold group-hover:scale-110 transition-transform">
+                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"></path></svg>
+                    </div>
+                    <h4 class="font-serif text-xl mb-4 text-white group-hover:text-luxury-gold transition-colors">Experiencias VIP</h4>
+                    <p class="text-gray-400 font-light text-sm leading-relaxed">Acceso a lo inaccesible. Cenas privadas en monumentos históricos y compras privadas fuera de horario.</p>
+                </div>
+
+                <!-- Servicio 3 -->
+                <div class="p-10 border border-white/5 hover:border-luxury-gold/30 hover:bg-white/5 transition-all duration-500 reveal group">
+                    <div class="w-14 h-14 mx-auto mb-6 flex items-center justify-center text-luxury-gold group-hover:scale-110 transition-transform">
+                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    </div>
+                    <h4 class="font-serif text-xl mb-4 text-white group-hover:text-luxury-gold transition-colors">Concierge 24/7</h4>
+                    <p class="text-gray-400 font-light text-sm leading-relaxed">Un equipo dedicado que anticipa sus necesidades antes de que usted las exprese, en cualquier zona horaria.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonio Visual -->
+    <section class="py-24 bg-white relative">
+        <div class="container mx-auto px-6 flex flex-col md:flex-row items-center gap-16">
+            <div class="w-full md:w-1/2 reveal">
+                <div class="relative">
+                    <div class="absolute -top-4 -left-4 w-24 h-24 border-t-2 border-l-2 border-luxury-gold z-0"></div>
+                    <img src="https://images.unsplash.com/photo-1566073771259-6a8506099945?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="Luxury Hotel Interior" class="w-full h-[600px] object-cover shadow-2xl relative z-10 grayscale hover:grayscale-0 transition-all duration-1000">
+                    <div class="absolute -bottom-4 -right-4 w-24 h-24 border-b-2 border-r-2 border-luxury-gold z-0"></div>
+                </div>
+            </div>
+            <div class="w-full md:w-1/2 reveal">
+                <div class="pl-0 md:pl-10">
+                    <h3 class="font-serif text-4xl text-luxury-dark mb-6 leading-tight">Diseñado para los pocos que han visto todo.</h3>
+                    <p class="text-gray-600 mb-8 font-light leading-relaxed">
+                        "AURA transformó nuestra visión de un viaje familiar en una odisea privada. Desde el chef personal en la Toscana hasta el acceso privado al Vaticano, cada detalle fue ejecutado con una precisión militar y una elegancia sutil."
+                    </p>
+                    <div class="flex items-center gap-4">
+                        <div class="w-12 h-[1px] bg-luxury-dark"></div>
+                        <span class="uppercase tracking-widest text-xs font-semibold text-luxury-dark">La Familia Rockefeller</span>
+                    </div>
+                    
+                    <button class="mt-12 px-10 py-4 bg-luxury-dark text-white text-xs tracking-[0.2em] uppercase hover:bg-luxury-gold transition-colors duration-300">
+                        Explorar Membresías
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contacto Elegante -->
+    <section id="contacto" class="py-24 bg-luxury-dark relative flex items-center justify-center bg-[url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80')] bg-cover bg-fixed">
+        <div class="absolute inset-0 bg-luxury-dark/85"></div>
+        
+        <div class="relative z-10 container mx-auto px-6 max-w-2xl reveal">
+            <div class="text-center mb-12">
+                <span class="text-luxury-gold uppercase tracking-[0.2em] text-xs font-bold">Comience su legado</span>
+                <h3 class="font-serif text-4xl md:text-5xl text-white mt-4">Diseñe su próxima huida</h3>
+            </div>
+            
+            <form class="space-y-8 bg-black/40 p-8 md:p-12 backdrop-blur-md border border-white/10 shadow-2xl">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div class="group">
+                        <input type="text" placeholder="Nombre Completo" class="w-full p-3 text-white input-luxury placeholder-gray-400 font-light font-serif">
+                    </div>
+                    <div class="group">
+                        <input type="email" placeholder="Correo Electrónico" class="w-full p-3 text-white input-luxury placeholder-gray-400 font-light font-serif">
+                    </div>
+                </div>
+                <div class="group">
+                    <select class="w-full p-3 text-white bg-transparent border-b border-white/30 focus:border-luxury-gold outline-none font-light">
+                        <option class="text-black" value="" disabled selected>Interés Principal</option>
+                        <option class="text-black" value="destinos">Destinos Exclusivos</option>
+                        <option class="text-black" value="lifestyle">Aura Lifestyle</option>
+                        <option class="text-black" value="membresia">Membresía AURA</option>
+                    </select>
+                </div>
+                <div class="group">
+                    <textarea rows="3" placeholder="Detalles de su solicitud" class="w-full p-3 text-white input-luxury placeholder-gray-400 font-light font-serif"></textarea>
+                </div>
+                
+                <div class="text-center mt-8">
+                    <button type="button" class="px-12 py-4 bg-luxury-gold text-luxury-dark font-bold tracking-widest uppercase text-xs hover:bg-white transition-all duration-300 shadow-lg hover:shadow-luxury-gold/50">
+                        Solicitar Consulta Privada
+                    </button>
+                </div>
+            </form>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-black text-white py-16 border-t border-white/10">
+        <div class="container mx-auto px-6">
+            <div class="flex flex-col md:flex-row justify-between items-center md:items-start gap-10 text-center md:text-left">
+                <div class="md:w-1/3">
+                    <div class="flex items-center justify-center md:justify-start gap-2 mb-4">
+                        <img src="logo.png" alt="AURA Logo" class="h-8 w-auto opacity-80 filter grayscale hover:grayscale-0 transition-all">
+                        <span class="font-serif text-xl tracking-widest font-semibold text-white">AURA</span>
+                    </div>
+                    <p class="text-gray-500 text-sm font-light leading-relaxed max-w-xs mx-auto md:mx-0">
+                        Redefiniendo el viaje de lujo para el viajero moderno más exigente. Privacidad, exclusividad y perfección.
+                    </p>
+                </div>
+                
+                <div class="md:w-1/3">
+                    <h5 class="uppercase tracking-widest text-xs font-semibold mb-6 text-luxury-gold">Contacto</h5>
+                    <p class="text-gray-400 font-light text-sm mb-2">rossana@rdg.mx</p>
+                    <p class="text-gray-400 font-light text-sm">+52 477 896 7000</p>
+                    <p class="text-gray-400 font-light text-sm">León, Gto. México</p>
+                </div>
+
+                <div class="md:w-1/3 flex flex-col items-center md:items-end">
+                    <h5 class="uppercase tracking-widest text-xs font-semibold mb-6 text-luxury-gold">Social</h5>
+                    <div class="flex gap-4">
+                        <a href="#" class="text-gray-400 hover:text-luxury-gold transition-colors">Instagram</a>
+                        <a href="#" class="text-gray-400 hover:text-luxury-gold transition-colors">LinkedIn</a>
+                    </div>
+                    <p class="text-gray-600 text-xs mt-8">© 2024 Aura Private Travels.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script>
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                navbar.classList.remove('py-6', 'bg-transparent', 'bg-gradient-to-b');
+                navbar.classList.add('py-3', 'bg-luxury-dark/95', 'shadow-lg', 'backdrop-blur-sm');
+            } else {
+                navbar.classList.add('py-6', 'bg-gradient-to-b');
+                navbar.classList.remove('py-3', 'bg-luxury-dark/95', 'shadow-lg', 'backdrop-blur-sm');
+            }
+        });
+
+        const btn = document.getElementById('mobile-menu-btn');
+        const menu = document.getElementById('mobile-menu');
+        btn.addEventListener('click', () => menu.classList.toggle('hidden'));
+
+        // Intersection Observer para revelar elementos
+        const revealElements = document.querySelectorAll('.reveal');
+        const revealCallback = (entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                    observer.unobserve(entry.target);
+                }
+            });
+        };
+        const revealObserver = new IntersectionObserver(revealCallback, {
+            threshold: 0.1,
+            rootMargin: "0px 0px -50px 0px"
+        });
+        revealElements.forEach(el => revealObserver.observe(el));
+    
+    <script src="https://cdn.botpress.cloud/webchat/v3.6/inject.js"></script>
+<script src="https://files.bpcontent.cloud/2026/02/12/02/20260212021536-EAEONWRI.js" defer></script>
+    
+</body>
+</html>
